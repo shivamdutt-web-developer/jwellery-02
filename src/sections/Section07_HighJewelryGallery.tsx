@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutGrid, Grid3X3, Maximize2, Sparkles, Heart, Eye } from 'lucide-react';
+import { LayoutGrid, Grid3X3, Maximize2, Heart, Eye } from 'lucide-react';
 import type { Product } from '../types';
 
 interface Section07Props {
@@ -15,58 +15,54 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
   onToggleWishlist,
   wishlistIds,
 }) => {
-  const [layoutMode, setLayoutMode] = useState<'editorial' | 'grid' | 'spotlight'>('editorial');
+  const [layoutMode, setLayoutMode] = useState<'editorial' | 'grid' | 'spotlight'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'High Jewelry', 'Rings', 'Necklaces', 'Earrings'];
+  const categories = ['All', 'Rings', 'Necklaces', 'Earrings', 'High Jewelry'];
 
   const filtered = selectedCategory === 'All'
     ? products
     : products.filter((p) => p.category === selectedCategory || (selectedCategory === 'High Jewelry' && p.isHighJewelry));
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e5e0d8]">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white border-t border-[#e5e0d8]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 glass-panel-gold px-3 py-1 rounded-full text-xs text-[#897358] uppercase tracking-widest font-semibold mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Interactive Layout State Toggle</span>
-          </div>
-          <h2 className="font-serif-luxury text-3xl sm:text-5xl text-[#1a1a1a] font-normal">
+          <span className="text-xs uppercase text-[#a38c6d] tracking-[0.35em] font-semibold mb-2 block">
+            STOREFRONT GALLERY
+          </span>
+          <h2 className="font-serif-luxury text-3xl sm:text-5xl text-[#111111] font-normal">
             High Jewellery Masterpieces
           </h2>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="glass-panel p-1.5 rounded-full flex items-center gap-1 border border-[#e5e0d8]">
+          <div className="bg-[#efebe4] p-1 rounded flex items-center gap-1 border border-[#e5e0d8]">
             <button
               onClick={() => setLayoutMode('editorial')}
-              className={`px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 transition-all ${
-                layoutMode === 'editorial' ? 'bg-[#897358] text-white font-medium shadow-md' : 'text-[#666666] hover:text-[#1a1a1a]'
+              className={`px-3 py-1.5 rounded text-xs flex items-center gap-1.5 transition-all ${
+                layoutMode === 'editorial' ? 'bg-[#a38c6d] text-white font-medium' : 'text-[#666666] hover:text-[#111111]'
               }`}
-              title="Editorial 2-Column Mode"
             >
               <LayoutGrid className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Editorial</span>
+              <span className="hidden sm:inline">2 Column</span>
             </button>
 
             <button
               onClick={() => setLayoutMode('grid')}
-              className={`px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 transition-all ${
-                layoutMode === 'grid' ? 'bg-[#897358] text-white font-medium shadow-md' : 'text-[#666666] hover:text-[#1a1a1a]'
+              className={`px-3 py-1.5 rounded text-xs flex items-center gap-1.5 transition-all ${
+                layoutMode === 'grid' ? 'bg-[#a38c6d] text-white font-medium' : 'text-[#666666] hover:text-[#111111]'
               }`}
-              title="Grid Mode"
             >
               <Grid3X3 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Grid</span>
+              <span className="hidden sm:inline">4 Column Grid</span>
             </button>
 
             <button
               onClick={() => setLayoutMode('spotlight')}
-              className={`px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 transition-all ${
-                layoutMode === 'spotlight' ? 'bg-[#897358] text-white font-medium shadow-md' : 'text-[#666666] hover:text-[#1a1a1a]'
+              className={`px-3 py-1.5 rounded text-xs flex items-center gap-1.5 transition-all ${
+                layoutMode === 'spotlight' ? 'bg-[#a38c6d] text-white font-medium' : 'text-[#666666] hover:text-[#111111]'
               }`}
-              title="Spotlight Full View Mode"
             >
               <Maximize2 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Spotlight</span>
@@ -75,15 +71,15 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
         </div>
       </div>
 
-      <div className="flex overflow-x-auto gap-3 pb-6 mb-8 border-b border-[#e5e0d8]">
+      <div className="flex overflow-x-auto gap-2 pb-4 mb-8 border-b border-[#e5e0d8]">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full text-xs uppercase tracking-widest transition-all ${
+            className={`px-4 py-2 rounded text-xs uppercase tracking-widest transition-all ${
               selectedCategory === cat
-                ? 'bg-[#1a1a1a] text-white font-semibold'
-                : 'bg-gray-100 text-[#666666] hover:text-[#1a1a1a] border border-gray-200'
+                ? 'bg-[#111111] text-white font-semibold'
+                : 'bg-white text-[#666666] hover:text-[#111111] border border-[#e5e0d8]'
             }`}
           >
             {cat}
@@ -92,7 +88,7 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
       </div>
 
       <div
-        className={`grid gap-8 transition-all duration-500 ${
+        className={`grid gap-6 transition-all duration-500 ${
           layoutMode === 'editorial'
             ? 'grid-cols-1 md:grid-cols-2'
             : layoutMode === 'grid'
@@ -105,47 +101,51 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
           return (
             <div
               key={item.id}
-              className={`group relative glass-panel rounded-2xl overflow-hidden border border-[#e5e0d8] hover:border-[#897358] transition-all duration-500 shadow-sm hover:shadow-xl ${
-                layoutMode === 'spotlight' ? 'h-[500px]' : 'h-[420px]'
-              }`}
+              className="group relative bg-white rounded overflow-hidden border border-[#e5e0d8] hover:border-[#a38c6d] transition-all duration-500 flex flex-col justify-between shadow-sm hover:shadow-md"
             >
-              <img
-                src={item.images[0]}
-                alt={item.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="relative aspect-square overflow-hidden bg-[#ffffff] p-4 cursor-pointer" onClick={() => onSelectProduct(item)}>
+                <img
+                  src={item.images[0]}
+                  alt={item.name}
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                />
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleWishlist(item);
-                }}
-                className={`absolute top-4 right-4 p-2.5 rounded-full glass-panel border transition-all z-10 ${
-                  isWish ? 'border-red-500 text-red-500 bg-red-50' : 'border-white/30 text-white hover:border-[#897358]'
-                }`}
-              >
-                <Heart className={`w-4 h-4 ${isWish ? 'fill-current' : ''}`} />
-              </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleWishlist(item);
+                  }}
+                  className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-10 ${
+                    isWish ? 'border-red-400 text-red-500 bg-red-50' : 'border-[#e5e0d8] text-[#111111] bg-white hover:border-[#a38c6d]'
+                  }`}
+                >
+                  <Heart className={`w-4 h-4 ${isWish ? 'fill-current' : ''}`} />
+                </button>
+              </div>
 
-              <div className="absolute bottom-6 left-6 right-6 space-y-2 text-white">
-                <span className="text-[10px] uppercase text-[#d4af37] tracking-widest block font-semibold">
-                  {item.collection} Collection
-                </span>
-                <h3 className="font-serif-luxury text-xl sm:text-2xl text-white font-medium">
-                  {item.name}
-                </h3>
-                <p className="text-sm font-light text-[#f3e5ab]">
-                  ${item.price.toLocaleString()} USD
-                </p>
+              <div className="p-5 space-y-2 border-t border-[#e5e0d8] flex-1 flex flex-col justify-between">
+                <div>
+                  <span className="text-[9px] uppercase text-[#a38c6d] tracking-widest block font-bold">
+                    {item.collection}
+                  </span>
+                  <h3
+                    onClick={() => onSelectProduct(item)}
+                    className="font-serif-luxury text-base text-[#111111] font-medium line-clamp-1 cursor-pointer hover:text-[#a38c6d] transition-colors"
+                  >
+                    {item.name}
+                  </h3>
+                  <p className="text-sm font-semibold text-[#a38c6d] font-serif-luxury mt-1">
+                    ${item.price.toLocaleString()} USD
+                  </p>
+                </div>
 
-                <div className="pt-2 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="pt-2 flex gap-2">
                   <button
                     onClick={() => onSelectProduct(item)}
-                    className="flex-1 btn-pill py-2.5 bg-[#897358] text-white text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#6e5a43] transition-all"
+                    className="w-full btn-graff-gold py-2.5 text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>Quick View</span>
+                    <span>QUICK VIEW</span>
                   </button>
                 </div>
               </div>
