@@ -1,16 +1,14 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-interface Section06Props {
-  onAddToCart?: () => void;
-}
-
-export const Section06_RingBuilder: React.FC<Section06Props> = () => {
+export const Section06_RingBuilder: React.FC = () => {
   return (
     <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-[#f4f0eb] border-t border-[#e5e0d8]">
-      {/* Background Image: Floating Diamond Drop Necklaces on silk marble backdrop */}
       <img
         src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1800&q=80"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1800&q=80';
+        }}
         alt="High Jewellery Diamond Necklaces"
         className="w-full h-full object-cover object-center opacity-90 scale-100 hover:scale-105 transition-transform duration-700"
       />

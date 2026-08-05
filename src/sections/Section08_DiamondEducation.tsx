@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 export const Section08_DiamondEducation: React.FC = () => {
   const [activeDot, setActiveDot] = useState(0);
 
+  const fallbackImg = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80';
+
   const items = [
     {
       name: 'Icon Round Diamond Pendant',
@@ -36,6 +38,9 @@ export const Section08_DiamondEducation: React.FC = () => {
               <div className="w-full aspect-square bg-[#ffffff] flex items-center justify-center p-4 overflow-hidden border border-transparent hover:border-[#e5e0d8] rounded transition-all">
                 <img
                   src={item.image}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = fallbackImg;
+                  }}
                   alt={item.name}
                   className="max-h-full max-w-full object-contain group-hover/card:scale-105 transition-transform duration-500"
                 />

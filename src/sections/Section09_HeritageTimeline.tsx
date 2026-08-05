@@ -4,16 +4,17 @@ export const Section09_HeritageTimeline: React.FC = () => {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white border-t border-[#e5e0d8]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        {/* Left Side: Photo of model wearing diamond necklace on white gown */}
         <div className="w-full h-[450px] md:h-[520px] rounded overflow-hidden bg-[#f9f8f6]">
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=80';
+            }}
             alt="London Atelier Craftsmanship"
             className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
           />
         </div>
 
-        {/* Right Side: Editorial Text */}
         <div className="space-y-6 md:pl-6 text-center md:text-left">
           <span className="text-xs uppercase tracking-[0.35em] text-[#a38c6d] font-semibold block">
             ATELIER ARTISTRY

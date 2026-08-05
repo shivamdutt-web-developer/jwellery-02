@@ -9,17 +9,17 @@ interface Section01Props {
 export const Section01_HeroShowcase: React.FC<Section01Props> = ({ onExploreClick }) => {
   return (
     <section className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden bg-[#0a1f18]">
-      {/* Background Image: Male model campaign against emerald green & gold faceted diamond background */}
       <img
         src="https://images.unsplash.com/photo-1611591475167-27e1f40d1653?auto=format&fit=crop&w=2000&q=80"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=2000&q=80';
+        }}
         alt="Laurence Graff Signature Campaign"
         className="w-full h-full object-cover object-center scale-100"
       />
 
-      {/* Dark Gradient Overlay for Left Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
 
-      {/* Left Overlay Text (Exact Official Graff Layout) */}
       <div className="absolute inset-0 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-center text-white z-10">
         <div className="max-w-xl space-y-4">
           <span className="text-xs uppercase tracking-[0.35em] text-[#d4af37] font-semibold block">

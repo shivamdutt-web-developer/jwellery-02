@@ -18,6 +18,8 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
   const [layoutMode, setLayoutMode] = useState<'editorial' | 'grid' | 'spotlight'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
+  const fallbackImg = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=80';
+
   const categories = ['All', 'Rings', 'Necklaces', 'Earrings', 'High Jewelry'];
 
   const filtered = selectedCategory === 'All'
@@ -106,6 +108,9 @@ export const Section07_HighJewelryGallery: React.FC<Section07Props> = ({
               <div className="relative aspect-square overflow-hidden bg-[#ffffff] p-4 cursor-pointer" onClick={() => onSelectProduct(item)}>
                 <img
                   src={item.images[0]}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = fallbackImg;
+                  }}
                   alt={item.name}
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 />

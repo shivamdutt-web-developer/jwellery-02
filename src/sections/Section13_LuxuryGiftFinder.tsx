@@ -1,6 +1,8 @@
 import React from 'react';
 
 export const Section13_LuxuryGiftFinder: React.FC = () => {
+  const fallbackImg = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';
+
   const cards = [
     {
       title: 'Artistic Inspiration',
@@ -36,6 +38,9 @@ export const Section13_LuxuryGiftFinder: React.FC = () => {
             <div className="w-full h-80 rounded overflow-hidden bg-[#f7f5f0]">
               <img
                 src={card.image}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = fallbackImg;
+                }}
                 alt={card.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />

@@ -8,6 +8,8 @@ interface Section03Props {
 export const Section03_PixelReveal: React.FC<Section03Props> = ({ onExploreClick }) => {
   const [activeDot, setActiveDot] = useState(0);
 
+  const fallbackImg = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80';
+
   const rings = [
     {
       name: 'Laurence Graff Signature Yellow Gold Band',
@@ -33,7 +35,6 @@ export const Section03_PixelReveal: React.FC<Section03Props> = ({ onExploreClick
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white border-t border-[#e5e0d8]">
-      {/* 4 Isolated Rings Carousel */}
       <div className="relative group">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {rings.map((ring, idx) => (
@@ -41,6 +42,9 @@ export const Section03_PixelReveal: React.FC<Section03Props> = ({ onExploreClick
               <div className="w-full aspect-square bg-[#ffffff] flex items-center justify-center p-4 overflow-hidden border border-transparent hover:border-[#e5e0d8] rounded transition-all">
                 <img
                   src={ring.image}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = fallbackImg;
+                  }}
                   alt={ring.name}
                   className="max-h-full max-w-full object-contain group-hover/card:scale-105 transition-transform duration-500"
                 />
@@ -52,7 +56,6 @@ export const Section03_PixelReveal: React.FC<Section03Props> = ({ onExploreClick
           ))}
         </div>
 
-        {/* Carousel Arrow Buttons */}
         <button
           onClick={() => setActiveDot((prev) => (prev > 0 ? prev - 1 : 2))}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-2 rounded-full bg-white border border-[#e5e0d8] text-[#111111] shadow-sm hover:border-[#a38c6d] transition-all hidden sm:flex"
@@ -67,7 +70,6 @@ export const Section03_PixelReveal: React.FC<Section03Props> = ({ onExploreClick
         </button>
       </div>
 
-      {/* Pagination Dots & EXPLORE RINGS button */}
       <div className="mt-10 flex flex-col items-center gap-4">
         <div className="flex gap-2">
           {[0, 1, 2].map((dot) => (
