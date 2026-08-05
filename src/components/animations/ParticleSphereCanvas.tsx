@@ -7,11 +7,12 @@ export const ParticleSphereCanvas: React.FC = () => {
   const [speed, setSpeed] = useState<number>(0.008);
   const particleCount = 900;
 
+  // Rich high-contrast colors for pristine white background
   const colors = {
-    diamond: ['#ffffff', '#e0f2fe', '#897358', '#f8fafc', '#cbd5e1'],
-    yellow: ['#facc15', '#eab308', '#ca8a04', '#ffffff', '#897358'],
-    emerald: ['#10b981', '#059669', '#047857', '#ffffff', '#6ee7b7'],
-    sapphire: ['#3b82f6', '#1d4ed8', '#1e40af', '#ffffff', '#93c5fd'],
+    diamond: ['#897358', '#b39268', '#444444', '#1a1a1a', '#d4af37'],
+    yellow: ['#ca8a04', '#eab308', '#897358', '#a16207', '#d97706'],
+    emerald: ['#059669', '#047857', '#10b981', '#065f46', '#897358'],
+    sapphire: ['#1d4ed8', '#1e40af', '#3b82f6', '#1e3a8a', '#897358'],
   };
 
   useEffect(() => {
@@ -101,9 +102,10 @@ export const ParticleSphereCanvas: React.FC = () => {
       const cx = width / 2;
       const cy = height / 2;
 
+      // Soft light radial background glow
       const radial = ctx.createRadialGradient(cx, cy, 10, cx, cy, radius * 1.2);
-      radial.addColorStop(0, 'rgba(137, 115, 88, 0.18)');
-      radial.addColorStop(0.6, 'rgba(137, 115, 88, 0.05)');
+      radial.addColorStop(0, 'rgba(137, 115, 88, 0.1)');
+      radial.addColorStop(0.6, 'rgba(137, 115, 88, 0.02)');
       radial.addColorStop(1, 'transparent');
       ctx.fillStyle = radial;
       ctx.beginPath();
@@ -126,7 +128,7 @@ export const ParticleSphereCanvas: React.FC = () => {
           z2,
           color: p.color,
           size: p.size * perspective,
-          alpha: Math.max(0.15, (z2 + radius) / (2 * radius)),
+          alpha: Math.max(0.25, (z2 + radius) / (2 * radius)),
         };
       });
 
@@ -136,11 +138,11 @@ export const ParticleSphereCanvas: React.FC = () => {
         ctx.save();
         ctx.globalAlpha = pt.alpha;
         ctx.fillStyle = pt.color;
-        ctx.shadowBlur = pt.size > 2 ? 8 : 2;
+        ctx.shadowBlur = pt.size > 2 ? 6 : 1;
         ctx.shadowColor = pt.color;
 
         ctx.beginPath();
-        ctx.arc(pt.screenX, pt.screenY, Math.max(0.5, pt.size), 0, Math.PI * 2);
+        ctx.arc(pt.screenX, pt.screenY, Math.max(0.6, pt.size), 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       });
@@ -161,26 +163,26 @@ export const ParticleSphereCanvas: React.FC = () => {
   }, [colorTheme, speed, particleCount]);
 
   return (
-    <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden rounded-2xl glass-panel p-4">
+    <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden rounded-2xl bg-white border border-[#e5e0d8] p-4 shadow-sm">
       <canvas ref={canvasRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-      <div className="absolute bottom-6 left-6 right-6 glass-panel-gold p-4 rounded-xl flex flex-wrap items-center justify-between gap-4 text-xs z-10">
+      <div className="absolute bottom-6 left-6 right-6 glass-panel-gold p-4 rounded-xl flex flex-wrap items-center justify-between gap-4 text-xs z-10 bg-white/90 backdrop-blur-md border border-[#e5e0d8] shadow-md text-[#1a1a1a]">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#897358] animate-pulse" />
-          <span className="font-serif-luxury text-sm tracking-wider uppercase text-white font-medium">3D Gemstone Particle Sphere</span>
+          <span className="font-serif-luxury text-sm tracking-wider uppercase text-[#1a1a1a] font-semibold">3D Gemstone Particle Sphere</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <Palette className="w-3.5 h-3.5 text-[#767676]" />
-          <span className="text-[#767676] mr-1">Gem Color:</span>
+          <Palette className="w-3.5 h-3.5 text-[#666666]" />
+          <span className="text-[#666666] font-medium mr-1">Gem Color:</span>
           {(['diamond', 'yellow', 'emerald', 'sapphire'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setColorTheme(t)}
-              className={`px-3 py-1 rounded-full text-[10px] uppercase font-medium tracking-wider transition-all ${
+              className={`px-3 py-1 rounded-full text-[10px] uppercase font-semibold tracking-wider transition-all ${
                 colorTheme === t
-                  ? 'bg-[#897358] text-white shadow-lg shadow-[#897358]/40'
-                  : 'bg-black/60 text-[#767676] hover:text-white border border-white/10'
+                  ? 'bg-[#897358] text-white shadow-md'
+                  : 'bg-gray-100 text-[#666666] hover:text-[#1a1a1a] border border-gray-200'
               }`}
             >
               {t}
@@ -189,8 +191,8 @@ export const ParticleSphereCanvas: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <RotateCw className="w-3.5 h-3.5 text-[#767676]" />
-          <span className="text-[#767676]">Spin Speed:</span>
+          <RotateCw className="w-3.5 h-3.5 text-[#666666]" />
+          <span className="text-[#666666] font-medium">Spin Speed:</span>
           <input
             type="range"
             min="0.002"
