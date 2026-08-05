@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, ShoppingBag, Heart, Menu, X, Globe, PhoneCall, ChevronDown, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, ShoppingBag, Heart, Menu, X, Globe, PhoneCall, ChevronDown, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import type { CartItem } from '../types';
 
 interface NavigationProps {
@@ -22,13 +22,52 @@ export const Navigation: React.FC<NavigationProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [currency, setCurrency] = useState('USD ($)');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
   const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const playChime = () => {
+    if (!isAudioEnabled) return;
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+      osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15); // A6
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    } catch (e) {
+      // Audio fallback
+    }
+  };
 
   const categories = ['HIGH JEWELRY', 'RINGS', 'NECKLACES', 'EARRINGS', 'BRACELETS', 'TIMEPIECES', 'BRIDAL'];
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-[#e5e0d8] transition-all duration-300">
+      {/* Scroll-Driven Golden Reading Progress Line */}
+      <div
+        className="h-[2px] bg-[#a38c6d] transition-all duration-150 ease-out z-50"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
       {/* Official Top Announcement Bar in Sand Champagne Gold */}
       <div className="bg-[#b39c82] text-white py-1.5 px-4 sm:px-8 text-[11px] flex items-center justify-between font-sans font-medium">
         <div className="flex items-center gap-4">
@@ -41,6 +80,21 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Sound Effect Toggle */}
+          <button
+            onClick={() => {
+              setIsAudioEnabled(!isAudioEnabled);
+              playChime();
+            }}
+            className="flex items-center gap-1 hover:text-white/80 transition-colors text-[10px] uppercase font-semibold"
+            title="Toggle Ambient Audio Feedback"
+          >
+            {isAudioEnabled ? <Volume2 className="w-3 h-3 text-white animate-pulse" /> : <VolumeX className="w-3 h-3 text-white/60" />}
+            <span className="hidden sm:inline">{isAudioEnabled ? 'Audio Active' : 'Audio Muted'}</span>
+          </button>
+
+          <span className="text-white/40">|</span>
+
           <div className="relative group">
             <button className="flex items-center gap-1 hover:text-white/80 transition-colors">
               <Globe className="w-3 h-3 text-white" />
@@ -85,8 +139,8 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* Center Brand Logo */}
         <div className="text-center lg:w-1/3">
-          <a href="#" className="inline-block">
-            <h1 className="font-serif-luxury text-3xl sm:text-4xl tracking-[0.25em] font-bold text-[#111111] uppercase">
+          <a href="#" className="inline-block group">
+            <h1 className="font-serif-luxury text-3xl sm:text-4xl tracking-[0.25em] font-bold text-[#111111] uppercase group-hover:text-[#a38c6d] transition-colors">
               GRAFF
             </h1>
             <span className="text-[9px] tracking-[0.4em] uppercase text-[#a38c6d] block -mt-1 font-semibold">
@@ -106,31 +160,44 @@ export const Navigation: React.FC<NavigationProps> = ({
           </button>
 
           <button
-            onClick={onOpenBooking}
+            onClick={() => {
+              playChime();
+              onOpenBooking();
+            }}
             className="hidden sm:flex items-center gap-1.5 btn-graff-gold py-2 px-4 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>BOOK SALON</span>
           </button>
 
-          <button onClick={onOpenBooking} className="text-[#111111] hover:text-[#a38c6d] p-2 relative" aria-label="Wishlist">
+          <button
+            onClick={() => {
+              playChime();
+              onOpenBooking();
+            }}
+            className="text-[#111111] hover:text-[#a38c6d] p-2 relative"
+            aria-label="Wishlist"
+          >
             <Heart className="w-5 h-5" />
             {wishlistCount > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 bg-[#a38c6d] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute top-1 right-1 w-4 h-4 bg-[#a38c6d] text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-bounce">
                 {wishlistCount}
               </span>
             )}
           </button>
 
           <button
-            onClick={onOpenCart}
+            onClick={() => {
+              playChime();
+              onOpenCart();
+            }}
             className="text-[#111111] hover:text-[#a38c6d] p-2 relative flex items-center gap-2"
             aria-label="Cart"
           >
             <div className="relative">
               <ShoppingBag className="w-5 h-5 text-[#111111]" />
               {totalCartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#a38c6d] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#a38c6d] text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-bounce">
                   {totalCartCount}
                 </span>
               )}
@@ -151,12 +218,15 @@ export const Navigation: React.FC<NavigationProps> = ({
               className="relative py-2"
             >
               <button
-                onClick={() => onSelectCategory(cat)}
+                onClick={() => {
+                  playChime();
+                  onSelectCategory(cat);
+                }}
                 className="text-xs uppercase tracking-[0.22em] font-semibold text-[#222222] hover:text-[#a38c6d] transition-colors py-1"
               >
                 {cat}
                 {activeMegaMenu === cat && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#a38c6d] transition-all" />
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#a38c6d] transition-all duration-300" />
                 )}
               </button>
             </div>

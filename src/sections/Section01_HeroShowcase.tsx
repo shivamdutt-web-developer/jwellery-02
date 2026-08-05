@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Gem, Award } from 'lucide-react';
 
 interface Section01Props {
   onExploreClick: () => void;
@@ -22,7 +22,7 @@ export const Section01_HeroShowcase: React.FC<Section01Props> = ({ onExploreClic
 
   return (
     <section className="relative w-full h-[88vh] md:h-[92vh] overflow-hidden bg-[#0c1f19] flex items-center">
-      {/* Background Campaign Image with Subtle Mouse Tilt Parallax */}
+      {/* Background Campaign Image with Mouse Parallax */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1611591475167-27e1f40d1653?auto=format&fit=crop&w=2000&q=80"
@@ -36,16 +36,27 @@ export const Section01_HeroShowcase: React.FC<Section01Props> = ({ onExploreClic
           }}
         />
 
-        {/* Soft Vignette Overlay for Crisp Typography Readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
       </div>
 
-      {/* Hero Content (Exact Official Graff Layout & Typography Scale) */}
+      {/* Floating Glassmorphic Luxury Micro-Badges (Motion Sites Spec) */}
+      <div className="absolute top-12 right-12 z-20 hidden lg:flex flex-col gap-4">
+        <div className="glass-panel px-4 py-2.5 rounded-full border border-white/20 text-white text-xs flex items-center gap-2 shadow-xl animate-float bg-black/40 backdrop-blur-md">
+          <Gem className="w-4 h-4 text-[#d4af37]" />
+          <span>D-Flawless Certified Gemstones</span>
+        </div>
+        <div className="glass-panel px-4 py-2.5 rounded-full border border-white/20 text-white text-xs flex items-center gap-2 shadow-xl animate-float bg-black/40 backdrop-blur-md" style={{ animationDelay: '1.5s' }}>
+          <Award className="w-4 h-4 text-[#d4af37]" />
+          <span>Handcrafted London Atelier</span>
+        </div>
+      </div>
+
+      {/* Hero Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full flex flex-col justify-center text-white">
         <div className="max-w-xl space-y-5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#d4af37]/30">
-            <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#d4af37] animate-spin" />
             <span className="text-[11px] uppercase tracking-[0.35em] text-[#d4af37] font-semibold">
               COLLECTION 2026
             </span>
@@ -63,7 +74,7 @@ export const Section01_HeroShowcase: React.FC<Section01Props> = ({ onExploreClic
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <button
               onClick={onExploreClick}
-              className="btn-graff-gold inline-flex items-center gap-2 shadow-xl hover:scale-105 transition-all"
+              className="btn-graff-gold shine-effect inline-flex items-center gap-2 shadow-xl hover:scale-105 transition-all"
             >
               <span>EXPLORE COLLECTION</span>
               <ArrowRight className="w-4 h-4" />

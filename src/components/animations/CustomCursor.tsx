@@ -19,7 +19,8 @@ export const CustomCursor: React.FC = () => {
           target.tagName === 'INPUT' ||
           target.getAttribute('role') === 'button' ||
           target.closest('button') ||
-          target.closest('a'))
+          target.closest('a') ||
+          target.closest('.group'))
       ) {
         setIsHovered(true);
       } else {
@@ -29,14 +30,14 @@ export const CustomCursor: React.FC = () => {
 
     const handleMouseLeave = () => setIsVisible(false);
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
     let animId: number;
     const updateTrail = () => {
       setTrail((prev) => ({
-        x: prev.x + (position.x - prev.x) * 0.18,
-        y: prev.y + (position.y - prev.y) * 0.18,
+        x: prev.x + (position.x - prev.x) * 0.22,
+        y: prev.y + (position.y - prev.y) * 0.22,
       }));
       animId = requestAnimationFrame(updateTrail);
     };
@@ -53,15 +54,17 @@ export const CustomCursor: React.FC = () => {
 
   return (
     <>
+      {/* Small Gold Cursor Point */}
       <div
-        className="fixed top-0 left-0 w-2 h-2 bg-[#897358] rounded-full pointer-events-none z-[9999] transform -translate-x-1/2 -translate-y-1/2 shadow-md transition-transform duration-75"
+        className="fixed top-0 left-0 w-2.5 h-2.5 bg-[#a38c6d] rounded-full pointer-events-none z-[9999] transform -translate-x-1/2 -translate-y-1/2 shadow-md transition-transform duration-75"
         style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
       />
 
+      {/* Magnetic Trailing Ring with Glow */}
       <div
-        className={`fixed top-0 left-0 pointer-events-none z-[9998] transform -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#897358]/80 transition-all duration-300 ease-out ${
+        className={`fixed top-0 left-0 pointer-events-none z-[9998] transform -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#a38c6d] transition-all duration-200 ease-out ${
           isHovered
-            ? 'w-12 h-12 bg-[#897358]/20 border-[#897358] scale-110 shadow-lg shadow-[#897358]/30'
+            ? 'w-12 h-12 bg-[#a38c6d]/15 border-[#a38c6d] scale-125 shadow-lg shadow-[#a38c6d]/40 animate-pulse'
             : 'w-8 h-8 bg-transparent'
         }`}
         style={{ transform: `translate3d(${trail.x}px, ${trail.y}px, 0)` }}
