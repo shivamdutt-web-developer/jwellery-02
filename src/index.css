@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-surface-base: #ffffff;
+    --color-surface-muted: #f9f8f6;
+    --color-text-base: #111111;
+    --color-text-secondary: #666666;
+    --color-text-inverse: #ffffff;
+    --color-surface-raised: #897358;
+    --color-border-strong: #e5e0d8;
+    
+    --font-primary: 'Cormorant Garamond', 'Cinzel', serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+
+    --radius-xs: 100px;
+    --shadow-1: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+    --shadow-gold: 0px 10px 30px -5px rgba(137, 115, 88, 0.25);
+  }
+
+  body {
+    background-color: var(--color-surface-base);
+    color: var(--color-text-base);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  h1, h2, h3, h4, .font-serif-luxury {
+    font-family: var(--font-primary);
+  }
+}
+
+/* Custom Light Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1ede8;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5b8a5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #897358;
+}
+
+/* Luxury Gold Gradients & Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #a38c6d 0%, #897358 50%, #6e5a43 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #897358 0%, #a38c6d 50%, #6e5a43 100%);
+}
+
+.bg-gold-radial {
+  background: radial-gradient(circle at center, rgba(137, 115, 88, 0.12) 0%, transparent 70%);
+}
+
+.border-gold {
+  border-color: rgba(137, 115, 88, 0.3);
+}
+
+.hover-gold-glow:hover {
+  box-shadow: 0 0 25px rgba(137, 115, 88, 0.25);
+}
+
+/* Marquee infinite scroll */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.03); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+/* Light Glassmorphism Luxury Panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 224, 216, 0.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.glass-panel-gold {
+  background: rgba(137, 115, 88, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(137, 115, 88, 0.25);
+}
+
+/* Focus Visible WCAG Accessibility */
+:focus-visible {
+  outline: 2px solid #897358 !important;
+  outline-offset: 3px !important;
+}
+
+/* Button Pill Standard */
+.btn-pill {
+  border-radius: 100px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: all 300ms ease;
+}
