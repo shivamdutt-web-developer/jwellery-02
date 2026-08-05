@@ -1,183 +1,36 @@
-import React, { useState } from 'react';
-import { Sparkles, ShoppingBag, RotateCw } from 'lucide-react';
-import type { Product } from '../types';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 interface Section06Props {
-  onAddToCart: (product: Product, quantity: number, ringSize?: string) => void;
+  onAddToCart?: () => void;
 }
 
-export const Section06_RingBuilder: React.FC<Section06Props> = ({ onAddToCart }) => {
-  const [carat, setCarat] = useState<number>(3.5);
-  const [cut, setCut] = useState<'Round Brilliant' | 'Emerald' | 'Oval' | 'Pear' | 'Cushion'>('Oval');
-  const [metal, setMetal] = useState<'Platinum' | '18k Yellow Gold' | '18k White Gold' | '18k Rose Gold'>('Platinum');
-  const [color, setColor] = useState<'D' | 'E' | 'Fancy Yellow' | 'Fancy Pink'>('D');
-
-  const basePrice = 12000;
-  const caratMultiplier = Math.pow(carat, 1.85);
-  const colorMultiplier = color === 'Fancy Pink' ? 2.2 : color === 'Fancy Yellow' ? 1.6 : 1.2;
-  const calculatedPrice = Math.round(basePrice * caratMultiplier * colorMultiplier);
-
-  const imagesByCut: Record<string, string> = {
-    'Round Brilliant': 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=1000&q=80',
-    'Emerald': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=80',
-    'Oval': 'https://images.unsplash.com/photo-1603561596112-0a132b757442?auto=format&fit=crop&w=1000&q=80',
-    'Pear': 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1000&q=80',
-    'Cushion': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1000&q=80',
-  };
-
-  const currentImage = imagesByCut[cut] || imagesByCut['Oval'];
-
-  const handleOrderCustomRing = () => {
-    const customProduct: Product = {
-      id: `custom-ring-${Date.now()}`,
-      name: `Bespoke ${carat.toFixed(2)}ct ${cut} Diamond Ring`,
-      category: 'Rings',
-      collection: 'Laurence Graff',
-      price: calculatedPrice,
-      caratWeight: `${carat.toFixed(2)} ct`,
-      gemstone: color === 'Fancy Yellow' ? 'Yellow Diamond' : 'White Diamond',
-      metal,
-      images: [currentImage],
-      description: `Bespoke London Atelier engagement ring featuring a ${carat.toFixed(2)} carat ${cut} cut ${color} color diamond set in handcrafted ${metal}.`,
-      details: [`GIA Certified Grade: ${color}-Flawless`, `Handcrafted setting in ${metal}`]
-    };
-
-    onAddToCart(customProduct, 1, '6.0');
-  };
-
+export const Section06_RingBuilder: React.FC<Section06Props> = () => {
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e5e0d8]">
-      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <div className="inline-flex items-center gap-2 glass-panel-gold px-3 py-1 rounded-full text-xs text-[#897358] uppercase tracking-widest font-semibold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Interactive 360° Customizer</span>
-        </div>
-        <h2 className="font-serif-luxury text-3xl sm:text-5xl text-[#1a1a1a] font-normal">
-          Build Your Bespoke Engagement Ring
-        </h2>
-        <p className="text-xs sm:text-sm text-[#666666]">
-          Configure your dream diamond ring in real-time. Select your preferred carat weight, cut diamond shape, precious metal, and color grade.
-        </p>
-      </div>
+    <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-[#f4f0eb] border-t border-[#e5e0d8]">
+      {/* Background Image: Floating Diamond Drop Necklaces on silk marble backdrop */}
+      <img
+        src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=1800&q=80"
+        alt="High Jewellery Diamond Necklaces"
+        className="w-full h-full object-cover object-center opacity-90 scale-100 hover:scale-105 transition-transform duration-700"
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#f9f8f6] p-6 sm:p-10 rounded-2xl border border-[#e5e0d8] shadow-sm">
-        <div className="lg:col-span-6 flex flex-col items-center">
-          <div className="relative w-full aspect-square max-w-md rounded-2xl overflow-hidden glass-panel border border-[#e5e0d8] group">
-            <img
-              src={currentImage}
-              alt="Bespoke Custom Ring"
-              className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-            />
-            <div className="absolute top-4 left-4 flex flex-col gap-2">
-              <span className="glass-panel px-3 py-1 text-xs text-[#1a1a1a] font-bold rounded-full font-serif-luxury border border-[#e5e0d8]">
-                {carat.toFixed(2)} Carat
-              </span>
-              <span className="glass-panel px-3 py-1 text-xs text-[#897358] rounded-full border border-[#897358]/40 font-semibold">
-                {cut} Cut
-              </span>
-            </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-            <div className="absolute bottom-4 right-4 glass-panel p-2 rounded-full text-[#897358]" title="360 View Active">
-              <RotateCw className="w-4 h-4 animate-spin" />
-            </div>
-          </div>
-        </div>
+      <div className="absolute inset-0 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 flex flex-col justify-center text-white z-10">
+        <div className="max-w-md space-y-3">
+          <span className="text-xs uppercase tracking-[0.35em] text-[#d4af37] font-semibold block">
+            HIGH JEWELLERY
+          </span>
 
-        <div className="lg:col-span-6 space-y-8">
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-xs uppercase text-[#666666] tracking-wider font-semibold">1. Diamond Carat Weight:</label>
-              <span className="text-sm font-bold text-[#1a1a1a] font-serif-luxury">{carat.toFixed(2)} ct</span>
-            </div>
-            <input
-              type="range"
-              min="0.75"
-              max="8.0"
-              step="0.25"
-              value={carat}
-              onChange={(e) => setCarat(parseFloat(e.target.value))}
-              className="w-full accent-[#897358] cursor-pointer"
-            />
-            <div className="flex justify-between text-[10px] text-[#666666] mt-1 font-medium">
-              <span>0.75 ct</span>
-              <span>2.5 ct</span>
-              <span>5.0 ct</span>
-              <span>8.0 ct</span>
-            </div>
-          </div>
+          <h2 className="font-serif-luxury text-4xl sm:text-6xl text-white font-normal leading-tight">
+            Diamond Necklaces
+          </h2>
 
-          <div>
-            <label className="block text-xs uppercase text-[#666666] tracking-wider mb-2 font-semibold">2. Diamond Cut Shape:</label>
-            <div className="flex flex-wrap gap-2">
-              {(['Oval', 'Round Brilliant', 'Emerald', 'Pear', 'Cushion'] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCut(c)}
-                  className={`px-4 py-2 rounded-lg text-xs transition-all ${
-                    cut === c
-                      ? 'bg-[#897358] text-white font-semibold shadow-md shadow-[#897358]/30'
-                      : 'bg-white text-[#444444] border border-[#e5e0d8] hover:text-[#1a1a1a]'
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs uppercase text-[#666666] tracking-wider mb-2 font-semibold">3. Precious Metal Band:</label>
-            <div className="grid grid-cols-2 gap-2">
-              {(['Platinum', '18k Yellow Gold', '18k White Gold', '18k Rose Gold'] as const).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMetal(m)}
-                  className={`px-3 py-2 rounded-lg text-xs transition-all text-left flex items-center gap-2 ${
-                    metal === m
-                      ? 'bg-[#897358]/15 border border-[#897358] text-[#1a1a1a] font-semibold'
-                      : 'bg-white text-[#444444] border border-[#e5e0d8] hover:text-[#1a1a1a]'
-                  }`}
-                >
-                  <div className={`w-3 h-3 rounded-full ${m.includes('Yellow') ? 'bg-amber-400' : m.includes('Rose') ? 'bg-rose-300' : 'bg-slate-300'}`} />
-                  <span>{m}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs uppercase text-[#666666] tracking-wider mb-2 font-semibold">4. Rare Diamond Color:</label>
-            <div className="flex flex-wrap gap-2">
-              {(['D', 'E', 'Fancy Yellow', 'Fancy Pink'] as const).map((col) => (
-                <button
-                  key={col}
-                  onClick={() => setColor(col)}
-                  className={`px-3 py-1.5 rounded-lg text-xs transition-all ${
-                    color === col
-                      ? 'bg-[#897358] text-white font-bold'
-                      : 'bg-white text-[#444444] border border-[#e5e0d8] hover:text-[#1a1a1a]'
-                  }`}
-                >
-                  {col}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="pt-6 border-t border-[#e5e0d8] flex items-center justify-between gap-4">
-            <div>
-              <span className="text-[10px] text-[#666666] uppercase tracking-widest block font-medium">Estimated Bespoke Value</span>
-              <span className="text-2xl sm:text-3xl font-serif-luxury text-gold-gradient font-bold">
-                ${calculatedPrice.toLocaleString()} USD
-              </span>
-            </div>
-
-            <button
-              onClick={handleOrderCustomRing}
-              className="btn-pill px-6 py-3.5 bg-gradient-to-r from-[#897358] to-[#a38c6d] text-white font-medium uppercase tracking-widest flex items-center gap-2 hover:shadow-lg hover:shadow-[#897358]/30 transition-all text-xs"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Add Bespoke Ring to Bag</span>
+          <div className="pt-2">
+            <button className="btn-graff-gold inline-flex items-center gap-2">
+              <span>EXPLORE</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

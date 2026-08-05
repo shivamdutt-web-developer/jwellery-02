@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import { PRODUCTS } from './data/products';
-import type { Product, CartItem } from './types';
 import { Navigation } from './components/Navigation';
-import { CartDrawer } from './components/CartDrawer';
-import { QuickViewModal } from './components/QuickViewModal';
-import { SearchModal } from './components/SearchModal';
-import { CustomCursor } from './components/animations/CustomCursor';
-
-// Import All 20 Explicit Luxury Sections
 import { Section01_HeroShowcase } from './sections/Section01_HeroShowcase';
 import { Section02_HeritageTicker } from './sections/Section02_HeritageTicker';
 import { Section03_PixelReveal } from './sections/Section03_PixelReveal';
@@ -29,154 +21,158 @@ import { Section18_SocialGallery } from './sections/Section18_SocialGallery';
 import { Section19_VIPNewsletter } from './sections/Section19_VIPNewsletter';
 import { Section20_LuxuryFooter } from './sections/Section20_LuxuryFooter';
 
+import { CartDrawer } from './components/CartDrawer';
+import { SearchModal } from './components/SearchModal';
+import { QuickViewModal } from './components/QuickViewModal';
+import { CustomCursor } from './components/animations/CustomCursor';
+
+import { PRODUCTS } from './data/products';
+import type { Product, CartItem } from './types';
+
 export function App() {
-  // Global Interactive Application State
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    { product: PRODUCTS[0], quantity: 1, ringSize: '6.0' }
-  ]);
-  const [wishlist, setWishlist] = useState<string[]>(['graff-001']);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Cart Operations
   const handleAddToCart = (product: Product, quantity = 1, ringSize?: string) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-        );
+      const existingIndex = prev.findIndex(
+        (item) => item.product.id === product.id && item.selectedRingSize === ringSize
+      );
+      if (existingIndex > -1) {
+        const updated = [...prev];
+        updated[existingIndex].quantity += quantity;
+        return updated;
       }
-      return [...prev, { product, quantity, ringSize }];
+      return [...prev, { product, quantity, selectedRingSize: ringSize }];
     });
     setIsCartOpen(true);
   };
 
-  const handleUpdateQuantity = (id: string, delta: number) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) => {
-          if (item.product.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
-    );
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+    } else {
+      setCartItems((prev) =>
+        prev.map((item) => (item.product.id === productId ? { ...item, quantity } : item))
+      );
+    }
   };
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.product.id !== id));
+  const handleRemoveItem = (productId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
   };
 
-  // Wishlist Operations
   const handleToggleWishlist = (product: Product) => {
-    setWishlist((prev) =>
-      prev.includes(product.id) ? prev.filter((id) => id !== product.id) : [...prev, product.id]
-    );
+    setWishlist((prev) => {
+      const exists = prev.some((p) => p.id === product.id);
+      if (exists) {
+        return prev.filter((p) => p.id !== product.id);
+      }
+      return [...prev, product];
+    });
   };
 
-  // Navigation Scrolling Helpers
-  const scrollToCatalog = () => {
-    document.getElementById('catalog-matrix')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
-  const scrollToBooking = () => {
-    document.getElementById('boutique-booking')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const wishlistIds = wishlist.map((w) => w.id);
 
   return (
-    <div className="min-h-screen bg-black text-white relative font-sans selection:bg-[#897358] selection:text-white">
-      {/* Luxury Golden Follower Cursor */}
+    <div className="min-h-screen bg-white text-[#111111] selection:bg-[#a38c6d] selection:text-white relative">
       <CustomCursor />
 
-      {/* Navigation Bar Header */}
+      {/* 1. Official Graff Navigation */}
       <Navigation
         cartItems={cartItems}
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenBooking={scrollToBooking}
-        onSelectCategory={() => scrollToCatalog()}
+        onOpenBooking={() => scrollToSection('boutique-booking')}
+        onSelectCategory={() => scrollToSection('catalog-matrix')}
       />
 
-      {/* MAIN CONTENT: 20 COMPREHENSIVE SECTIONS */}
+      {/* 2. Official Graff 20 Sections Structure */}
       <main>
-        {/* Section 1: Hero Showcase */}
-        <Section01_HeroShowcase onExploreClick={scrollToCatalog} onBookClick={scrollToBooking} />
+        {/* Section 1: Hero Campaign Banner (Male Model Laurence Graff Signature) */}
+        <Section01_HeroShowcase
+          onExploreClick={() => scrollToSection('catalog-matrix')}
+          onBookClick={() => scrollToSection('boutique-booking')}
+        />
 
-        {/* Section 2: Heritage Ticker */}
+        {/* Section 2: Heritage Ticker Marquee */}
         <Section02_HeritageTicker />
 
-        {/* Section 3: Swiss Pixel Reveal Scratch Canvas */}
-        <Section03_PixelReveal />
+        {/* Section 3: Ring Carousel (4 Isolated Rings) */}
+        <Section03_PixelReveal onExploreClick={() => scrollToSection('catalog-matrix')} />
 
-        {/* Section 4: 3D Interactive Particle Sphere Studio */}
-        <Section04_3DParticleSphere />
+        {/* Section 4: 2-Column Editorial Grid (Macro Ring Zoom & Bangles) */}
+        <Section04_3DParticleSphere onExploreClick={() => scrollToSection('catalog-matrix')} />
 
-        {/* Section 5: Iconic Collections Showcase */}
-        <Section05_IconicCollections onSelectCategory={() => scrollToCatalog()} />
+        {/* Section 5: High Jewelry Emerald Engagement Banner */}
+        <Section05_IconicCollections onSelectCategory={() => scrollToSection('catalog-matrix')} />
 
-        {/* Section 6: Bespoke 360° Ring Customizer */}
-        <Section06_RingBuilder onAddToCart={handleAddToCart} />
+        {/* Section 6: High Jewelry Diamond Necklace Silk Marble Banner */}
+        <Section06_RingBuilder />
 
-        {/* Section 7: High Jewelry Gallery with Fancy Layout Toggle */}
+        {/* Section 7: High Jewelry Masterpieces Gallery & Layout Toggle */}
         <Section07_HighJewelryGallery
           products={PRODUCTS}
-          onSelectProduct={(p) => setQuickViewProduct(p)}
+          onSelectProduct={(p: Product) => setSelectedProduct(p)}
           onToggleWishlist={handleToggleWishlist}
-          wishlistIds={wishlist}
+          wishlistIds={wishlistIds}
         />
 
-        {/* Section 8: The 4 Cs Diamond Mastery Guide */}
+        {/* Section 8: Category Product Carousel (Pendants, Eternity Bands, Drop Earrings) */}
         <Section08_DiamondEducation />
 
-        {/* Section 9: Legendary Historic Gems Timeline */}
+        {/* Section 9: 50/50 Split Editorial Feature 1 (Model wearing diamond necklace) */}
         <Section09_HeritageTimeline />
 
-        {/* Section 10: Virtual AR Try-On Studio */}
+        {/* Section 10: 50/50 Split Editorial Feature 2 (Diamond Drop Earrings on beige silk) */}
         <Section10_VirtualTryOn />
 
-        {/* Section 11: London Atelier Craftsmanship Workflow */}
+        {/* Section 11: Bespoke 360° Ring Customizer */}
         <Section11_AtelierCraftsmanship />
 
-        {/* Section 12: High Jewelry Parallax Lookbook */}
-        <Section12_RunwayLookbook products={PRODUCTS} onSelectProduct={(p) => setQuickViewProduct(p)} />
+        {/* Section 12: Swiss Pixel Scratch Unveil Canvas */}
+        <Section12_RunwayLookbook />
 
-        {/* Section 13: VIP Luxury Gift Recommendation Wizard */}
-        <Section13_LuxuryGiftFinder products={PRODUCTS} onSelectProduct={(p) => setQuickViewProduct(p)} />
+        {/* Section 13: The World of Graff 3-Card Grid */}
+        <Section13_LuxuryGiftFinder />
 
-        {/* Section 14: Bridal & Engagement Suite */}
+        {/* Section 14: 3D Gemstone Particle Sphere Studio */}
         <Section14_BridalSuite />
 
-        {/* Section 15: Global Flagship Concierge Appointment Booking */}
+        {/* Section 15: Virtual AR Try-On Studio */}
         <Section15_BoutiqueConcierge />
 
-        {/* Section 16: Press Accolades & Client Testimonials */}
+        {/* Section 16: Legendary Historic Gems Timeline */}
         <Section16_Testimonials />
 
-        {/* Section 17: Interactive Filtered E-Commerce Catalog Matrix */}
-        <Section17_ProductMatrix
-          products={PRODUCTS}
-          onSelectProduct={(p) => setQuickViewProduct(p)}
-          onAddToCart={handleAddToCart}
-          onToggleWishlist={handleToggleWishlist}
-          wishlistIds={wishlist}
-        />
+        {/* Section 17: The 4 Cs Diamond Mastery Guide */}
+        <Section17_ProductMatrix />
 
-        {/* Section 18: World of Graff Social Masonry Showcase */}
+        {/* Section 18: Global Flagship Salon Booking */}
         <Section18_SocialGallery />
 
-        {/* Section 19: VIP Atelier Newsletter & Trust Badges */}
+        {/* Section 19: Official Graff Newsletter Banner */}
         <Section19_VIPNewsletter />
+
+        {/* Section 20: Official Graff Multi-Column Footer */}
+        <Section20_LuxuryFooter
+          onOpenBooking={() => scrollToSection('boutique-booking')}
+          onSelectCategory={() => scrollToSection('catalog-matrix')}
+        />
       </main>
 
-      {/* Section 20: Comprehensive Luxury Footer */}
-      <Section20_LuxuryFooter onOpenBooking={scrollToBooking} onSelectCategory={() => scrollToCatalog()} />
-
-      {/* GLOBAL INTERACTIVE MODALS */}
+      {/* Global Modals */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -185,19 +181,19 @@ export function App() {
         onRemoveItem={handleRemoveItem}
       />
 
-      <QuickViewModal
-        product={quickViewProduct}
-        onClose={() => setQuickViewProduct(null)}
-        onAddToCart={handleAddToCart}
-        onToggleWishlist={handleToggleWishlist}
-        isWishlisted={quickViewProduct ? wishlist.includes(quickViewProduct.id) : false}
-      />
-
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         products={PRODUCTS}
-        onSelectProduct={(p) => setQuickViewProduct(p)}
+        onSelectProduct={(product: Product) => setSelectedProduct(product)}
+      />
+
+      <QuickViewModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+        onToggleWishlist={handleToggleWishlist}
+        isWishlisted={selectedProduct ? wishlistIds.includes(selectedProduct.id) : false}
       />
     </div>
   );

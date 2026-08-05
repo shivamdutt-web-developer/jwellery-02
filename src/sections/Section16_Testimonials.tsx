@@ -1,66 +1,61 @@
 import React, { useState } from 'react';
-import { TESTIMONIALS } from '../data/data';
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { HISTORIC_GEMS } from '../data/data';
 
 export const Section16_Testimonials: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-  };
-
-  const current = TESTIMONIALS[currentIndex];
+  const currentGem = HISTORIC_GEMS[selectedIndex];
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#e5e0d8]">
-      <div className="max-w-4xl mx-auto text-center space-y-8 glass-panel p-8 sm:p-14 rounded-2xl border border-[#e5e0d8] relative shadow-sm">
-        <Quote className="w-12 h-12 text-[#897358] mx-auto opacity-40 stroke-[1]" />
+    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white border-t border-[#e5e0d8]">
+      <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
+        <span className="text-xs uppercase tracking-[0.35em] text-[#a38c6d] font-semibold block">
+          HERITAGE ARCHIVE
+        </span>
+        <h2 className="font-serif-luxury text-3xl sm:text-5xl text-[#111111] font-normal">
+          Legendary Historic Gems Timeline
+        </h2>
+        <p className="text-xs sm:text-sm text-[#666666]">
+          Laurence Graff has handled more historic diamonds of international importance than any other family atelier.
+        </p>
+      </div>
 
-        <div className="min-h-[140px] flex flex-col justify-center">
-          <p className="font-serif-luxury text-2xl sm:text-4xl text-[#1a1a1a] font-light italic leading-relaxed">
-            "{current.quote}"
-          </p>
+      <div className="flex justify-between items-center relative mb-10 max-w-4xl mx-auto">
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2 z-0" />
+        {HISTORIC_GEMS.map((gem, idx) => (
+          <button
+            key={idx}
+            onClick={() => setSelectedIndex(idx)}
+            className={`relative z-10 flex flex-col items-center gap-2 group focus:outline-none`}
+          >
+            <div
+              className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-serif-luxury transition-all duration-300 ${
+                selectedIndex === idx
+                  ? 'bg-[#a38c6d] text-white font-bold scale-110 shadow-md'
+                  : 'bg-white border border-[#e5e0d8] text-[#666666]'
+              }`}
+            >
+              {gem.year}
+            </div>
+            <span className={`text-[10px] uppercase tracking-wider hidden sm:block font-semibold ${selectedIndex === idx ? 'text-[#a38c6d]' : 'text-[#666666]'}`}>
+              {gem.name}
+            </span>
+          </button>
+        ))}
+      </div>
 
-          <div className="mt-6">
-            <span className="text-xs uppercase text-[#897358] tracking-[0.25em] font-bold block">
-              {current.author}
-            </span>
-            <span className="text-[11px] text-[#666666] tracking-widest uppercase font-semibold">
-              {current.publication}
-            </span>
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#efebe4] p-6 sm:p-10 rounded border border-[#e5e0d8] max-w-5xl mx-auto">
+        <div className="lg:col-span-6 space-y-4 text-[#111111]">
+          <span className="text-xs uppercase text-[#a38c6d] tracking-widest font-bold block">Discovered in {currentGem.year}</span>
+          <h3 className="font-serif-luxury text-3xl sm:text-4xl font-medium">{currentGem.name}</h3>
+          <p className="text-xs text-[#666666] leading-relaxed">{currentGem.description}</p>
+          <span className="inline-block text-xs text-[#a38c6d] font-bold uppercase tracking-wider">Weight: {currentGem.carat}</span>
         </div>
 
-        <div className="flex justify-center items-center gap-4 pt-4">
-          <button
-            onClick={handlePrev}
-            className="p-3 rounded-full border border-[#e5e0d8] text-[#666666] hover:text-[#1a1a1a] hover:border-[#897358] transition-all bg-white"
-            aria-label="Previous quote"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <div className="flex gap-2">
-            {TESTIMONIALS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentIndex(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  currentIndex === i ? 'bg-[#897358] w-6' : 'bg-gray-300'
-                }`}
-              />
-            ))}
+        <div className="lg:col-span-6">
+          <div className="h-72 rounded overflow-hidden bg-white border border-[#e5e0d8]">
+            <img src={currentGem.image} alt={currentGem.name} className="w-full h-full object-cover" />
           </div>
-          <button
-            onClick={handleNext}
-            className="p-3 rounded-full border border-[#e5e0d8] text-[#666666] hover:text-[#1a1a1a] hover:border-[#897358] transition-all bg-white"
-            aria-label="Next quote"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
         </div>
       </div>
     </section>
