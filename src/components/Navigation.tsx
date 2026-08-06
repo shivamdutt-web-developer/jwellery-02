@@ -45,8 +45,8 @@ export const Navigation: React.FC<NavigationProps> = ({
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
-      osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15); // A6
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
       gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
       osc.connect(gain);
@@ -62,7 +62,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-[#e5e0d8] transition-all duration-300">
-      {/* Scroll-Driven Golden Reading Progress Line */}
+      {/* Golden Scroll Progress Indicator Line */}
       <div
         className="h-[2px] bg-[#a38c6d] transition-all duration-150 ease-out z-50"
         style={{ width: `${scrollProgress}%` }}
@@ -80,7 +80,6 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Sound Effect Toggle */}
           <button
             onClick={() => {
               setIsAudioEnabled(!isAudioEnabled);
